@@ -1,0 +1,186 @@
+#include "pch.h" 
+#include <iostream> 
+using namespace std;
+const int N = 10;
+int table[N][N];
+
+char a1, b1;  // координаты 1го игрока
+char a2, b2;  // координаты 2го игрока 
+int x;        // Счетчик подсчета введенных танков 1м игроком
+int q;      // Счетчик подсчета попыток
+int y = 0;  // Счетчик подсчета попаданий
+
+int main()
+{
+	setlocale(LC_ALL, "rus");
+	// заполнение массива -1
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			table[i][j] = -1;
+
+		}
+
+	}
+	// ввод положения танков
+	do
+	{
+		do {
+			// цикл проверки количества танков
+			x = 1;
+			for (int i = 0; i < N; i++)
+			{
+				for (int j = 0; j < N; j++)
+				{
+
+					if (table[i][j] != -1)
+					{
+						x++;
+					}
+
+				}
+
+			}
+			cout << "\t      Игрок 1 " << endl;
+			cout << "\tПоложение танка № " << x << endl;
+			// ввод координат расположения танков
+			do {
+				cout << "Введите 1ю координату " << endl;
+				cin >> a1;
+				a1 = a1 - 48;
+				cout << "Введите 2ю координату " << endl;
+				cin >> b1;
+				b1 = b1 - 48;
+
+			} while (a1 < 1 || a1> 9 || b1 < 1 || b1 > 9);  // проверка что введены цифры
+
+			cout << "Количество танков = " << x << endl;
+			cout << "Осталось ввести = " << 9 - x << endl << endl;
+
+		} while (table[a1][b1] != -1);  // проверка что координаты не заняты другим танком
+		table[a1][b1] = 1;
+
+		//вывод массива
+		cout << "   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | " << endl;
+		for (int i = 1; i < N; i++)
+		{
+			cout << i;
+			for (int j = 0; j < N; j++)
+			{
+
+				if (table[i][j] == -1)
+				{
+					cout << " " << " | ";
+				}
+				else if (table[i][j] == 1)
+				{
+					cout << "T" << " | ";
+				}
+			}
+			cout << endl;
+		}
+		cout << endl;
+	} while (x != 9);
+
+	cout << endl << endl << endl << endl << endl << endl <<
+		endl << endl << endl << endl << endl << endl << endl <<
+		endl << endl << endl << endl << endl << endl << endl << endl;
+
+	do
+	{
+		cout << "              Игрок 2 " << endl;
+		cout << "Введите возможное положение танка " << endl;
+	link:
+		// ввод координат расположения танков
+		do {
+			cout << "Введите 1ю координату " << endl;
+			cin >> a2;
+			cout << "Введите 2ю координату " << endl;
+			cin >> b2;
+
+		} while (a2 < 49 || a2> 57 || b2 < 49 || b2 > 57);  // проверка что введены цифры
+
+		a2 = a2 - 48;
+		b2 = b2 - 48;
+
+		if (table[a2][b2] == 1)
+		{
+			table[a2][b2] = 2;
+			y++;     // Счетчик подсчета попаданий
+			cout << endl;
+			cout << "Вы попали в танк" << endl;
+			cout << endl;
+			cout << "   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | " << endl;
+			//вывод массива
+			for (int i = 1; i < N; i++)
+			{
+				cout << i;
+				for (int j = 0; j < N; j++)
+				{
+
+					if (table[i][j] == -1)
+					{
+						cout << " " << " | ";
+					}
+					else if (table[i][j] == 2)
+					{
+						cout << "X" << " | ";
+					}
+					else if (table[i][j] == 0)
+					{
+						cout << "*" << " | ";
+					}
+				}
+				cout << endl;
+			}
+			cout << endl;
+		}
+		else if (table[a2][b2] == 0 || table[a2][b2] == 2)
+		{
+			cout << endl;
+			cout << "Вы уже использовали данные координаты " << endl;
+			goto link;
+		}
+		else
+		{
+			table[a2][b2] = 0;
+			cout << endl;
+			cout << "   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | " << endl;
+			//вывод массива
+			for (int i = 1; i < N; i++)
+			{
+				cout << i;
+				for (int j = 0; j < N; j++)
+				{
+					if (table[i][j] == -1)
+					{
+						cout << " " << " | ";
+					}
+					else if (table[i][j] == 1)
+					{
+						cout << " " << " | ";
+					}
+					else if (table[i][j] == 0)
+					{
+						cout << "*" << " | ";
+					}
+					else if (table[i][j] == 2)
+					{
+						cout << "X" << " | ";
+					}
+				}
+				cout << endl;
+			}
+			cout << endl;
+		}
+		q++;
+		cout << endl;
+		cout << "Количество попаданий = " << y << endl;
+		cout << "Количество попыток = " << q << endl;
+
+	} while (y != x);
+
+	cout << "Все танки разбиты = " << y << endl;
+	cout << endl;
+}
